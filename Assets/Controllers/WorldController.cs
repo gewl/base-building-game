@@ -22,6 +22,8 @@ public class WorldController : MonoBehaviour {
 
 				//add spriterendered w/o sprite, as tiles are empty
 				tile_go.AddComponent<SpriteRenderer> ();
+
+				tile_data.cbRegisterTileTypeChanged ( (tile) => { OnTileTypeChanged(tile, tile_go); } );
 			}
 		}
 
