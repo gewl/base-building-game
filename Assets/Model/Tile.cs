@@ -6,6 +6,7 @@ using System;
 public class Tile {
 
 	public enum TileType { Empty, Floor };
+
 	TileType _type = TileType.Empty;
 	LooseObject looseObject;
 	InstalledObject installedObject;

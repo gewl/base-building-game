@@ -19,6 +19,7 @@ public class WorldController : MonoBehaviour {
 				GameObject tile_go = new GameObject ();
 				tile_go.name = "Tile_" + x + "_" + y;
 				tile_go.transform.position = new Vector3 (tile_data.X, tile_data.Y);
+				tile_go.transform.SetParent(this.transform, true);
 
 				//add spriterendered w/o sprite, as tiles are empty
 				tile_go.AddComponent<SpriteRenderer> ();
@@ -35,10 +36,10 @@ public class WorldController : MonoBehaviour {
 	void Update () {
 		randomizeTileTimer -= Time.deltaTime;
 
-		if (randomizeTileTimer < 0) {
-			world.RandomizeTiles ();
-			randomizeTileTimer = 2f;
-		}
+//		if (randomizeTileTimer < 0) {
+//			world.RandomizeTiles ();
+//			randomizeTileTimer = 2f;
+//		}
 	}
 
 	void OnTileTypeChanged(Tile tile_data, GameObject tile_go) {
