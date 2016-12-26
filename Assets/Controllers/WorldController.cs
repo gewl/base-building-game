@@ -4,18 +4,25 @@ using UnityEngine;
 
 public class WorldController : MonoBehaviour {
 
+	public static WorldController Instance { get; protected set; }
+
 	public Sprite floorSprite;
 
-	World world;
+	public World World { get; protected set; }
 
 	void Start () {
+		if (Instance != null) {
+			Debug.LogError ("Duplicate world controllers.");
+		}
+		Instance = this;
+
 		//instantiate empty world
-		world = new World ();
+		World = new World ();
 
 		//create a GameObject for each tile for rendering
-		for (int x = 0; x < world.Width; x++) {
-			for (int y = 0; y < world.Height; y++) {
-				Tile tile_data = world.GetTileAt (x, y);
+		for (int x = 0; x < World.Width; x++) {
+			for (int y = 0; y < World.Height; y++) {
+				Tile tile_data = World.GetTileAt (x, y);
 				GameObject tile_go = new GameObject ();
 				tile_go.name = "Tile_" + x + "_" + y;
 				tile_go.transform.position = new Vector3 (tile_data.X, tile_data.Y);
@@ -28,18 +35,13 @@ public class WorldController : MonoBehaviour {
 			}
 		}
 
-		world.RandomizeTiles ();
+		World.RandomizeTiles ();
 	}
 
 	float randomizeTileTimer = 2f;
 
 	void Update () {
-		randomizeTileTimer -= Time.deltaTime;
-
-//		if (randomizeTileTimer < 0) {
-//			world.RandomizeTiles ();
-//			randomizeTileTimer = 2f;
-//		}
+		
 	}
 
 	void OnTileTypeChanged(Tile tile_data, GameObject tile_go) {
