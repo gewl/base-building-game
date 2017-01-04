@@ -7,6 +7,7 @@ public class MouseController : MonoBehaviour {
 
 	public GameObject circleCursorPrefab;
 
+	bool 		  buildModeIsObjects = false;
 	Tile.TileType buildModeTile = Tile.TileType.Floor;
 
 	Vector3 lastFramePosition;
@@ -45,7 +46,6 @@ public class MouseController : MonoBehaviour {
 
 	void UpdateDragging() {
 		//if we are over a UI element, block behavior
-
 		if ( EventSystem.current.IsPointerOverGameObject() ) {
 			return;
 		}
@@ -100,7 +100,15 @@ public class MouseController : MonoBehaviour {
 				for (int y = start_y; y <= end_y; y++) {
 					Tile t = WorldController.Instance.World.GetTileAt (x, y);
 					if (t != null) {
-						t.Type = buildModeTile;
+						if (buildModeIsObjects) {
+							// create the InstalledObject and assign it to the tile
+
+							// FIXME: only applies to walls rn
+
+						} else {
+							// tile-changing mode
+							t.Type = buildModeTile;
+						}							
 					}
 				}
 			}
@@ -122,12 +130,21 @@ public class MouseController : MonoBehaviour {
 
 	public void SetMode_BuildFloor(){
 
+		buildModeIsObjects = false;
+		buildModeTile = Tile.TileType.Floor;
+
+	}
+
+	public void SetMode_BuildWall(){
+
+		buildModeIsObjects = true;
 		buildModeTile = Tile.TileType.Floor;
 
 	}
 
 	public void SetMode_Bulldoze(){
 
+		buildModeIsObjects = false;
 		buildModeTile = Tile.TileType.Empty;
 
 	}
