@@ -5,6 +5,9 @@ using UnityEngine;
 public class World {
 
 	Tile[,] tiles;
+
+	Dictionary<string, InstalledObject> installedObjectPrototypes;
+
 	int width;
 	int height;
 
@@ -35,6 +38,21 @@ public class World {
 		}
 
 		Debug.Log ("World created with " + (width * height) + " tiles.");
+
+		CreateInstalledObjectPrototypes ();
+	}
+
+	void CreateInstalledObjectPrototypes() {
+		installedObjectPrototypes = new Dictionary<string, InstalledObject> ();
+
+		InstalledObject wallPrototype = InstalledObject.CreatePrototype (
+			"Wall", 
+			0,
+			1,
+			1
+		);
+
+		installedObjectPrototypes.Add ("Wall", wallPrototype);
 	}
 
 	public void RandomizeTiles() {

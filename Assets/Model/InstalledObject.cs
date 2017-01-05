@@ -19,23 +19,38 @@ public class InstalledObject {
 	int width;
 	int height;
 
-	// used by object factory to create prototypical object
-	public InstalledObject( string objectType, float movementCost = 1f, int width = 1, int height = 1 ){
-		this.objectType = objectType;
-		this.movementCost = movementCost;
-		this.width = width;
-		this.height = height;
+	// TODO: implement larger objects
+	// TODO: implement object rotation
+
+	static public InstalledObject CreatePrototype ( string objectType, float movementCost = 1f, int width = 1, int height = 1 ){
+		InstalledObject obj = new InstalledObject ();
+
+		obj.objectType = objectType;
+		obj.movementCost = movementCost;
+		obj.width = width;
+		obj.height = height;
+
+		return obj;
 	}
 
-	protected InstalledObject( InstalledObject proto, Tile tile ){
-		this.objectType = objectType;
-		this.movementCost = movementCost;
-		this.width = width;
-		this.height = height;
+	static public InstalledObject PlaceInstance ( InstalledObject proto, Tile tile ){
+		InstalledObject obj = new InstalledObject ();
 
-		this.tile = tile;
+		obj.objectType = proto.objectType;
+		obj.movementCost = proto.movementCost;
+		obj.width = proto.width;
+		obj.height = proto.height;
 
+		obj.tile = tile;
 
+		//FIXME: this assumes we are one-by-one
+		if ( !tile.PlaceObject(obj) ) {
+			// Weren't able to place object in this tile. Probably already occupied.
+
+			// DON'T return newly instantiated object if it wasn't installed successfully. Instead:
+			return null;
+		}
+		return obj;
 	}
 
 }
