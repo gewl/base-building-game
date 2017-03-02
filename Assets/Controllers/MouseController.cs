@@ -105,7 +105,7 @@ public class MouseController : MonoBehaviour {
 							// create the InstalledObject and assign it to the tile
 
 							// FIXME: only applies to walls rn
-							//WorldController.Instance.World.PlaceInstalledObject( buildModeObjectType, t );
+							WorldController.Instance.World.PlaceInstalledObject( buildModeObjectType, t );
 
 						} else {
 							// tile-changing mode
@@ -146,11 +146,8 @@ public class MouseController : MonoBehaviour {
 		buildModeTile = Tile.TileType.Empty;
 	}
 
-	Tile GetTileAtWorldCoord(Vector3 coord) {
-		int x = Mathf.FloorToInt (coord.x);
-		int y = Mathf.FloorToInt (coord.y);
 
-		return WorldController.Instance.World.GetTileAt (x, y);
-	}
+
+	
 }
 

@@ -1,6 +1,7 @@
-﻿using System.Collections;
+﻿using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine;
+using System;
+
 
 public class World {
 
@@ -24,6 +25,8 @@ public class World {
 			return height;
 		}
 	}
+
+	Action<InstalledObject> cbInstalledObjectCreated;
 
 	public World (int width = 100, int height = 100) {
 		this.width = width;
@@ -58,7 +61,7 @@ public class World {
 	public void RandomizeTiles() {
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				if (Random.Range (0, 2) == 0) {
+				if (UnityEngine.Random.Range (0, 2) == 0) {
 					tiles [x, y].Type = Tile.TileType.Empty;
 				} else {
 					tiles [x, y].Type = Tile.TileType.Floor;
@@ -73,5 +76,32 @@ public class World {
 			return null;
 		}
 		return tiles [x, y];
+	}
+
+	public void PlaceInstalledObject(string objectType, Tile t) {
+		//TODO: this function assumes 1x1 tiles
+
+		if ( installedObjectPrototypes.ContainsKey(objectType) == false ) {
+			Debug.LogError ("installedObjectPrototypes doesn't contain a proto for key: " + objectType);
+			return;
+		}
+			
+		InstalledObject obj = InstalledObject.PlaceInstance (installedObjectPrototypes [objectType], t);
+
+		if (obj == null) {
+			return;
+		}
+
+		if(cbInstalledObjectCreated != null) {
+			// failed to place object — probably already something there
+			cbInstalledObjectCreated (obj);
+		}
+	}
+
+	public void RegisterInstalledObjectCreated(Action<InstalledObject> callbackfunc) {
+		cbInstalledObjectCreated += callbackfunc;
+	}
+	public void UnregisterInstalledObjectCreated(Action<InstalledObject> callbackfunc) {
+		cbInstalledObjectCreated -= callbackfunc;
 	}
 }
